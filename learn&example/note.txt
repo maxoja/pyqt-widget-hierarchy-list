@@ -1,0 +1,5 @@
+these examples are gathered from
+http://zetcode.com/gui/pyqt5/
+
+you can enter the link to gain more details
+and buy the ebook
