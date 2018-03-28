@@ -1,81 +1,107 @@
 from TWmodel import HierarchicalModel
-from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout, QPushButton
+from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout, QPushButton, QSizePolicy, QLayout, QHBoxLayout, QScrollArea
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtGui import QPixmap, QFont
 import sys
-
-class HierarchicalItemWidget(QPushButton) :
-    styleString = '''
-        HierarchicalItemWidget:pressed {
-            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,   stop:0 rgba(60, 186, 162, 255), stop:1 rgba(98, 211, 162, 255))
-        }
-        HierarchicalItemWidget {
-             background-color: #3cbaa2; border: 0.1px solid black;
-             border-radius: 0px;
-        }
-
-        HierarchicalItemWidget:disabled {
-            # background-color: rgb(170, 170, 127)
-        }
-    '''
-
-    fixedHeight = 28
-    fixedWidth = 200
-    iconPath = "test.png"
-    xPadding = 6
-    yPadding = 3
-
-    def __init__(self, text="", parent=None):
-        QPushButton.__init__(self, "", parent)
-        self.setFixedHeight(self.fixedHeight)
-        self.setMinimumWidth(self.fixedWidth)
-        self.setStyleSheet(self.styleString)
-
-        self.pix = QPixmap(self.iconPath)
-        self.icon = QLabel(self)
-        self.label = QLabel(text, self)
-
-        self.__adjustIcon()
-        self.__adjustLabel()
-
-    def resizeEvent(self, a0):
-        # self.__adjustIcon()
-        self.__adjustLabel()
-
-    def __adjustIcon(self):
-        pixGeo = self.__getRefinedIconGeomatrix(self.pix)
-        newPix = self.pix.scaledToHeight(pixGeo[3])
-        self.icon.setGeometry(*pixGeo)
-        self.icon.setPixmap(newPix)
+import style
 
 
-    def __getRefinedIconGeomatrix(self, pix):
-        newWidth = self.height() - self.xPadding*2
-        newHeight = pix.width() * (newWidth) / pix.height()
-        return ( self.xPadding, self.yPadding, newHeight, newWidth )
+class ItemIcon(QLabel):
+    fixedSize = 18
 
-    def __adjustLabel(self):
-        self.label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        l = self.xPadding + self.icon.pixmap().width() + self.xPadding
-        t = self.yPadding
-        w = self.width()-l-self.xPadding
-        h = self.height()-2*self.yPadding
-        self.label.setGeometry(l,t,w,h)
+    def __init__(self, path, parent=None):
+        QLabel.__init__(self, parent)
+        pix = QPixmap(path)
+        pix = pix.scaledToHeight(self.fixedSize)
+        self.setPixmap(pix)
 
 
+class ItemLabel(QLabel):
+    family = ".SF NS Text"
+    fontSize = 16
 
-app = QApplication(sys.argv)
+    def __init__(self, text, parent=None):
+        QLabel.__init__(self, text, parent)
+        self.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        self.setFont(QFont(self.family, self.fontSize))
+        self.setStyleSheet(style.normalItemLabel)
 
-window = QWidget()
 
-layout = QVBoxLayout()
-layout.setContentsMargins(0,1,0,1)
-layout.setSpacing(1)
-for i in range(1,20) :
-    layout.addWidget(HierarchicalItemWidget(str(i*100000)))
-    layout.addWidget(HierarchicalItemWidget(str(i*100000)))
+class Item(QPushButton):
+    iconTextSpace = 7
+    leftMargin = 10
 
-window.setLayout(layout)
-window.show()
+    def __init__(self, iconPath, text, parent=None):
+        QPushButton.__init__(self,"", parent)
 
-sys.exit(app.exec_())
+        self.setFixedWidth(250)
+        self.setStyleSheet(style.normalItem)
+
+        self.icon = ItemIcon(iconPath)
+        self.label = ItemLabel(text)
+
+        layout = QHBoxLayout()
+        layout.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        layout.setSpacing(self.iconTextSpace)
+        layout.setContentsMargins(self.leftMargin,0,0,0)
+
+        layout.addWidget(self.icon)
+        layout.addWidget(self.label)
+
+        self.setLayout(layout)
+
+    def setSelected(self, selected):
+        if selected:
+            self.setStyleSheet(style.selectedItem)
+            self.label.setStyleSheet(style.selectedItemLabel)
+        else:
+            self.setStyleSheet(style.normalItem)
+            self.label.setStyleSheet(style.normalItemLabel)
+
+class ItemArea(QScrollArea):
+    fixedWidth = 250
+    minHeight = 550
+
+    def __init__(self, model, parent=None):
+        QScrollArea.__init__(self, parent)
+        self.model = model
+
+        self.setFixedWidth(self.fixedWidth)
+        self.setMinimumHeight(self.minHeight)
+        self.updateGeometry()
+
+        layout = QVBoxLayout()
+        layout.setSpacing(0)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+
+        for i in range(50):
+            item = Item("img/folder.png", "folder-" + str(i*100000))
+            item.clicked.connect(self.onClickItem)
+            layout.addWidget(item)
+
+        self.contentSpace = QWidget()
+        self.contentSpace.setLayout(layout)
+
+        self.setWidget(self.contentSpace)
+
+    def onClickItem(self):
+        for child in self.contentSpace.children():
+            if isinstance(child, Item):
+                child.setSelected(child == self.sender())
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+
+    # window = QWidget()
+    # scrollarea = QScrollArea()
+    # scrollarea.setWidget(ItemArea(None))
+    # window.show()
+    # scrollarea.show()
+
+    i = ItemArea(None)
+    i.show()
+
+    app.setStyleSheet(style.sheet)
+    sys.exit(app.exec_())

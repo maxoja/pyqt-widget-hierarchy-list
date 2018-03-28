@@ -7,4 +7,4 @@ and buy the ebook
 below here is a list of important topics which I will take a look and bring the example in soon
 - message box                       : http://zetcode.com/gui/pyqt5/firstprograms/
 - q main window ( menu & toolbars ) : http://zetcode.com/gui/pyqt5/menustoolbars/
--  
+- 

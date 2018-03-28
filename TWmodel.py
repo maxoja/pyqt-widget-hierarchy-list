@@ -29,6 +29,9 @@ class HierarchicalModel:
     def getTree(self, rootId):
         return self.dirDict[rootId], [ self.getTree(i) for i in self.connection[rootId] ]
 
+    def getChildrenOf(self, parentId):
+        return [ self.dirDict[i] for i in self.connection[parentId] ]
+
     def parentOf(self, childId):
         for parent, childList in self.connection.items() :
             if childId in childList :

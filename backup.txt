@@ -1,0 +1,96 @@
+
+# class HierarchicalItemWidget(QPushButton):
+#     fixedHeight = 28
+#     fixedWidth = 200
+#     iconPath = "test.png"
+#     xPadding = 6
+#     yPadding = 3
+#
+#     def __init__(self, text="", parent=None):
+#         QPushButton.__init__(self, "", parent)
+#         self.setFixedHeight(self.fixedHeight)
+#         self.setMinimumWidth(self.fixedWidth)
+#
+#         self.pix = QPixmap(self.iconPath)
+#         self.icon = QLabel(self)
+#         self.label = QLabel(text, self)
+#
+#         self.__adjustIcon()
+#         self.__adjustLabel()
+#
+#     def resizeEvent(self, a0):
+#         # self.__adjustIcon()
+#         self.__adjustLabel()
+#
+#     def __adjustIcon(self):
+#         pixGeo = self.__getRefinedIconGeomatrix(self.pix)
+#         newPix = self.pix.scaledToHeight(pixGeo[3])
+#         self.icon.setGeometry(*pixGeo)
+#         self.icon.setPixmap(newPix)
+#
+#     def __getRefinedIconGeomatrix(self, pix):
+#         newWidth = self.height() - self.xPadding * 2
+#         newHeight = pix.width() * (newWidth) / pix.height()
+#         return (self.xPadding, self.yPadding, newHeight, newWidth)
+#
+#     def __adjustLabel(self):
+#         self.label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
+#         l = self.xPadding + self.icon.pixmap().width() + self.xPadding
+#         t = self.yPadding
+#         w = self.width() - l - self.xPadding
+#         h = self.height() - 2 * self.yPadding
+#         self.label.setGeometry(l, t, w, h)
+#
+#
+# class HierarchicalArea(QWidget):
+#     def __init__(self, model, parent=None):
+#         QWidget.__init__(self, parent)
+#         self.model = model
+#
+#         layout = QVBoxLayout()
+#         layout.setContentsMargins(1, 1, 1, 1)
+#         layout.setSpacing(1)
+#
+#         for i in range(3):
+#             layout.addWidget(HierarchicalItemWidget(str(i * 100)))
+#
+#         # layout.setSizeConstraint(QLayout.SetMaximumSize)
+#         self.setLayout(layout)
+#         self.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
+#         layout.setSizeConstraint(QLayout.SetFixedSize)
+
+
+    # def p(w):
+    #     print(window.width())
+    #     h.setGeometry(0,0,window.width(),h.height())
+    #
+    # window = QWidget()
+    # layout = QVBoxLayout()
+    # b = QPushButton("")
+    # layout.addWidget(b)
+    # b = QPushButton("")
+    # layout.addWidget(b)
+    # b = QPushButton("")
+    # window.setLayout(layout)
+    # layout.addWidget(b)
+    # # layout.setSizeConstraint(QLayout.SetMinimumSize)
+    # layout.setSizeConstraint(QLayout.SetFixedSize)
+    # window.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Minimum)
+    # layout.setSpacing(0)
+    # layout.setContentsMargins(0,0,0,0)
+    # window.show()
+
+    # window = QWidget()
+    # window.paintEvent = p
+    # h = HierarchicalArea(None,window)
+    # window.show()
+
+    # w = HierarchicalArea(None)
+    # w.show()
+
+    # window = QWidget()
+    # layout = QVBoxLayout()
+    # layout.addWidget(HierarchicalItemWidget("Hello"))
+    # layout.addWidget(HierarchicalItemWidget("Hello"))
+    # window.setLayout(layout)
+    # window.show()
