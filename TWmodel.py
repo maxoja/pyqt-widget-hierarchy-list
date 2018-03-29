@@ -29,7 +29,10 @@ class HierarchicalModel:
     def getTree(self, rootId):
         return self.dirDict[rootId], [ self.getTree(i) for i in self.connection[rootId] ]
 
-    def getChildrenOf(self, parentId):
+    def getChildrenOf(self, parentId, getIdOnly=False):
+        if getIdOnly :
+            return self.connection[parentId][::]
+
         return [ self.dirDict[i] for i in self.connection[parentId] ]
 
     def parentOf(self, childId):
@@ -50,6 +53,16 @@ class HierarchicalModel:
         for parent, childList in self.connection.items() :
             if id in childList :
                 childList.remove(id)
+
+    def getIds(self):
+        return self.dirDict.keys()
+
+    def hasChildren(self, id):
+        return self.connection[id]
+
+    def getDir(self, id):
+        return self.dirDict[id]
+
 
 if __name__ == '__main__' :
     tree = HierarchicalModel()
