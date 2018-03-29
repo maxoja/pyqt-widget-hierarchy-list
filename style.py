@@ -14,8 +14,8 @@ sheet = '''
     '''
 
 selectedItem = '''
-    /*background-color: #5b5b5b;*/
-    background-color: #dbdbdb;
+    background-color: #5b5b5b;
+    /*background-color: #dbdbdb;*/
     padding: 4px;
     border: 0px;
 '''
@@ -27,7 +27,7 @@ normalItem = '''
 '''
 
 selectedItemLabel = '''
-    /*color: white;*/
+    color: white;
     padding: 0px;
 '''
 
