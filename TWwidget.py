@@ -9,7 +9,7 @@ import style
 class ItemIcon(QLabel):
     fixedSize = 18
 
-    def __init__(self, path, parent=None):
+    def __init__(self, path="img/folder.png", parent=None):
         QLabel.__init__(self, parent)
         pix = QPixmap(path)
         pix = pix.scaledToHeight(self.fixedSize)
@@ -28,22 +28,23 @@ class ItemLabel(QLabel):
 
 
 class Item(QPushButton):
-    iconTextSpace = 7
     leftMargin = 10
+    iconTextSpace = 7
+    levelIndentSpace = 20
 
-    def __init__(self, iconPath, text, parent=None):
+    def __init__(self, text, parent=None, level=0):
         QPushButton.__init__(self,"", parent)
 
         self.setFixedWidth(250)
         self.setStyleSheet(style.normalItem)
 
-        self.icon = ItemIcon(iconPath)
+        self.icon = ItemIcon()
         self.label = ItemLabel(text)
 
         layout = QHBoxLayout()
         layout.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         layout.setSpacing(self.iconTextSpace)
-        layout.setContentsMargins(self.leftMargin,0,0,0)
+        layout.setContentsMargins(self.leftMargin+(level*self.levelIndentSpace), 0, 0, 0)
 
         layout.addWidget(self.icon)
         layout.addWidget(self.label)
@@ -76,7 +77,7 @@ class ItemArea(QScrollArea):
         layout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
         for i in range(50):
-            item = Item("img/folder.png", "folder-" + str(i*100000))
+            item = Item("folder-" + str(i*100000), level=(i%3))
             item.clicked.connect(self.onClickItem)
             layout.addWidget(item)
 
