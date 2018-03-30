@@ -1,11 +1,12 @@
-from TWmodel import HierarchicalModel
+from TModel import HierarchicalModel
+from TWidget import DropDownArrow
+import TWidget.style as style
+
 from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout, QPushButton, QSizePolicy, QLayout, QHBoxLayout, QScrollArea, QToolTip
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap, QFont, QColor, QPalette
-from dropdown import DropDownArrow
+from PyQt5.QtGui import QPixmap, QFont, QColor
 
 import sys
-import style
 
 
 class ItemIcon(QLabel):
@@ -44,7 +45,6 @@ class Item(QPushButton):
 
         self.setFixedWidth(self.fixedWidth)
         self.setStyleSheet(style.normalItem)
-        # self.setStyleSheet("QToolTip{border: 2px solid orange; padding: 5px; border-radius: 3px; opacity: 200;}  background-color:#000000;")
 
         self.icon = ItemIcon()
         self.label = ItemLabel(text)
@@ -74,11 +74,6 @@ class Item(QPushButton):
             self.setStyleSheet(style.normalItem)
             self.label.setStyleSheet(style.normalItemLabel)
 
-        # palette = QPalette()
-        # palette.setColor(QPalette.ToolTipBase, QColor('#eff1f4'))
-        # QToolTip.setPalette(palette)
-
-
     def setSelected(self, selected):
         self.selected = selected
         self.arrow.setSelected(selected)
@@ -95,7 +90,7 @@ class Item(QPushButton):
         return self.id
 
 
-class ItemArea(QScrollArea):
+class HierarchyPanel(QScrollArea):
     fixedWidth = 250
     minHeight = 550
 
@@ -200,13 +195,7 @@ if __name__ == '__main__':
     tree.add(22, 10, name="HUD", tip="testtip\nhello world!")
     tree.add(23, 10, name="Bars", tip="testtip\nhello world!")
 
-    i = ItemArea(tree)
-    i.show()
-
-    # window = QWidget()
-    # scrollarea = QScrollArea()
-    # scrollarea.setWidget(ItemArea(None))
-    # window.show()
-    # scrollarea.show()
+    panel = HierarchyPanel(tree)
+    panel.show()
 
     sys.exit(app.exec_())
