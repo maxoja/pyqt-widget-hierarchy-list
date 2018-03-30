@@ -36,6 +36,11 @@ class Item(QPushButton):
     levelIndentSpace = 20
     fixedWidth = 250
 
+    arrowEq = 'self.dir * abs(self.x+0.01)**0.75*self.step*self.speed'
+    arrowKernel = 'sin(self.x*3.14/2)'
+    arrowSize = 12
+    arrowSpeed = 25
+
     def __init__(self, id, text, parent=None, level=0, expandable=False):
         QPushButton.__init__(self,"", parent)
         self.id = id
@@ -48,7 +53,7 @@ class Item(QPushButton):
 
         self.icon = ItemIcon()
         self.label = ItemLabel(text)
-        self.arrow = DropDownArrow()
+        self.arrow = DropDownArrow(size=self.arrowSize, speed=self.arrowSpeed, updateEquation=self.arrowEq, kernel=self.arrowKernel)
         if not expandable: self.arrow.setHideVisual(True)
 
         layout = QHBoxLayout()
