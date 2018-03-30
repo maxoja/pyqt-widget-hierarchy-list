@@ -27,7 +27,10 @@ class HierarchicalModel:
                     self.connection[id].append(i)
                     self.unmatched.remove(i)
 
-    def getTree(self, rootId):
+    def getTree(self, rootId, getIdOnly=False):
+        if getIdOnly:
+            return rootId, [self.getTree(i, getIdOnly) for i in self.connection[rootId]]
+
         return self.itemDict[rootId], [self.getTree(i) for i in self.connection[rootId]]
 
     def getChildrenOf(self, parentId, getIdOnly=False):
@@ -47,13 +50,20 @@ class HierarchicalModel:
         return self.parentOf(childId) is not None
 
     def removeById(self, id):
-        if id not in self.itemDict :
+        if id not in self.itemDict:
             return
 
         self.itemDict.pop(id)
-        for parent, childList in self.connection.items() :
+        for parent, childList in self.connection.items():
             if id in childList :
                 childList.remove(id)
+
+        children = self.connection[id][::]
+        self.connection.pop(id)
+
+        for childId in children:
+            self.removeById(childId)
+
 
     def getIds(self):
         return self.itemDict.keys()
@@ -84,5 +94,16 @@ if __name__ == '__main__' :
     tree.add(11, 10, name="Characters")
     tree.add(12, 10, name="Effects")
 
+    print('V connection V')
+    print(tree.connection,'\n')
+
+    print('V tree at folder root V')
+    print(tree.getTree(0, getIdOnly=True),'\n')
+
+    print('V tree at folder Weapons V')
+    print(tree.getTree(2),'\n')
+
+    # print('V tree at root removed 3D models V')
+    tree.removeById(1)
+    print(tree.getTree(0, getIdOnly=True))
     print(tree.connection)
-    print(tree.getTree(0))
