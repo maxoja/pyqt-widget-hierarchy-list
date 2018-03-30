@@ -72,8 +72,8 @@ class Item(QPushButton):
 
         if highlighted:
             self.arrow.setColor(QColor(220,220,220))
-            self.setStyleSheet(style.selectedItem)
-            self.label.setStyleSheet(style.selectedItemLabel)
+            self.setStyleSheet(style.highlightedItem)
+            self.label.setStyleSheet(style.highlightedItemLabel)
         else:
             self.arrow.setColor(QColor(0,0,0))
             self.setStyleSheet(style.normalItem)

@@ -6,7 +6,7 @@ QToolTip{
 }
 '''
 
-selectedItem = tooltip + '''
+highlightedItem = tooltip + '''
 *{
     background-color: #5b5b5b;
     /*background-color: #dbdbdb;*/
@@ -23,7 +23,7 @@ normalItem = tooltip + '''
 }
 '''
 
-selectedItemLabel = '''
+highlightedItemLabel = '''
 *{
     color: white;
     padding: 0px;
