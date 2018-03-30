@@ -1,7 +1,7 @@
 from TWmodel import HierarchicalModel
-from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout, QPushButton, QSizePolicy, QLayout, QHBoxLayout, QScrollArea
+from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout, QPushButton, QSizePolicy, QLayout, QHBoxLayout, QScrollArea, QToolTip
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap, QFont, QColor
+from PyQt5.QtGui import QPixmap, QFont, QColor, QPalette
 from dropdown import DropDownArrow
 
 import sys
@@ -44,6 +44,7 @@ class Item(QPushButton):
 
         self.setFixedWidth(self.fixedWidth)
         self.setStyleSheet(style.normalItem)
+        # self.setStyleSheet("QToolTip{border: 2px solid orange; padding: 5px; border-radius: 3px; opacity: 200;}  background-color:#000000;")
 
         self.icon = ItemIcon()
         self.label = ItemLabel(text)
@@ -72,6 +73,11 @@ class Item(QPushButton):
             self.arrow.setColor(QColor(0,0,0))
             self.setStyleSheet(style.normalItem)
             self.label.setStyleSheet(style.normalItemLabel)
+
+        # palette = QPalette()
+        # palette.setColor(QPalette.ToolTipBase, QColor('#eff1f4'))
+        # QToolTip.setPalette(palette)
+
 
     def setSelected(self, selected):
         self.selected = selected
@@ -119,11 +125,12 @@ class ItemArea(QScrollArea):
 
     def construct(self, layout, id, level):
         for childId in self.model.getChildrenOf(id, getIdOnly=True):
-            dirItem = self.model.getItemOf(childId)
-            dirExpandable = self.model.hasChildren(childId)
-            dirName = self.model.getNameOf(childId)
+            itemModel = self.model.getItemOf(childId)
+            itemExpandable = self.model.hasChildren(childId)
+            itemName = self.model.getNameOf(childId)
 
-            listItem = Item(id, dirName, level=level, expandable=dirExpandable)
+            listItem = Item(id, itemName, level=level, expandable=itemExpandable)
+            listItem.setToolTip(itemModel['tip'])
             listItem.clicked.connect(self.onClickItem)
             layout.addWidget(listItem)
             self.itemDict[childId] = listItem
@@ -165,33 +172,33 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     tree = HierarchicalModel()
-    tree.add(0, item="root")
-    tree.add(1, 0, item="3D models")
-    tree.add(2, 1, item="Weapons")
-    tree.add(3, 2, item="Guns")
-    tree.add(4, 2, item="Melees")
-    tree.add(5, 2, item="Bombs")
-    tree.add(24, 1, item="Furnitures")
-    tree.add(25, 1, item="Instruments")
-    tree.add(26, 1, item="Zombies")
-    tree.add(6, 1, item="Vehicles")
-    tree.add(7, 6, item="Boats")
-    tree.add(8, 6, item="Bikes")
-    tree.add(9, 1, item="Trees")
-    tree.add(10, 0, item="Sprite Sheets")
-    tree.add(11, 10, item="Characters")
-    tree.add(12, 10, item="Buildings")
-    tree.add(13, 10, item="Map-Tiles")
-    tree.add(14, 10, item="Buttons")
-    tree.add(15, 10, item="Obstacles")
-    tree.add(16, 10, item="Magics")
-    tree.add(17, 10, item="Bullets&Rockets")
-    tree.add(18, 10, item="Lights")
-    tree.add(19, 10, item="Effects")
-    tree.add(20, 10, item="Titles")
-    tree.add(21, 10, item="9-Patches")
-    tree.add(22, 10, item="HUD")
-    tree.add(23, 10, item="Bars")
+    tree.add(0, name="root", tip="testtip\nhello world!")
+    tree.add(1, 0, name="3D models", tip="testtip\nhello world!")
+    tree.add(2, 1, name="Weapons", tip="testtip\nhello world!")
+    tree.add(3, 2, name="Guns", tip="testtip\nhello world!")
+    tree.add(4, 2, name="Melees", tip="testtip\nhello world!")
+    tree.add(5, 2, name="Bombs", tip="testtip\nhello world!")
+    tree.add(24, 1, name="Furnitures", tip="testtip\nhello world!")
+    tree.add(25, 1, name="Instruments", tip="testtip\nhello world!")
+    tree.add(26, 1, name="Zombies", tip="testtip\nhello world!")
+    tree.add(6, 1, name="Vehicles", tip="testtip\nhello world!")
+    tree.add(7, 6, name="Boats", tip="testtip\nhello world!")
+    tree.add(8, 6, name="Bikes", tip="testtip\nhello world!")
+    tree.add(9, 1, name="Trees", tip="testtip\nhello world!")
+    tree.add(10, 0, name="Sprite Sheets", tip="testtip\nhello world!")
+    tree.add(11, 10, name="Characters", tip="testtip\nhello world!")
+    tree.add(12, 10, name="Buildings", tip="testtip\nhello world!")
+    tree.add(13, 10, name="Map-Tiles", tip="testtip\nhello world!")
+    tree.add(14, 10, name="Buttons", tip="testtip\nhello world!")
+    tree.add(15, 10, name="Obstacles", tip="testtip\nhello world!")
+    tree.add(16, 10, name="Magics", tip="testtip\nhello world!")
+    tree.add(17, 10, name="Bullets&Rockets", tip="testtip\nhello world!")
+    tree.add(18, 10, name="Lights", tip="testtip\nhello world!")
+    tree.add(19, 10, name="Effects", tip="testtip\nhello world!")
+    tree.add(20, 10, name="Titles", tip="testtip\nhello world!")
+    tree.add(21, 10, name="9-Patches", tip="testtip\nhello world!")
+    tree.add(22, 10, name="HUD", tip="testtip\nhello world!")
+    tree.add(23, 10, name="Bars", tip="testtip\nhello world!")
 
     i = ItemArea(tree)
     i.show()
@@ -202,5 +209,4 @@ if __name__ == '__main__':
     # window.show()
     # scrollarea.show()
 
-    app.setStyleSheet(style.sheet)
     sys.exit(app.exec_())

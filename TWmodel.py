@@ -4,7 +4,8 @@ class HierarchicalModel:
         self.itemDict = dict()
         self.unmatched = []
 
-    def add(self, id, parentId=None, item=None):
+    def add(self, id, parentId=None, **item):
+        assert( 'name' in item )
         self.itemDict[id] = item
         self.connection[id] = []
 
@@ -64,30 +65,24 @@ class HierarchicalModel:
         return self.itemDict[id]
 
     def getNameOf(self, id):
-        try: return self.itemDict[id].name
-        except: pass
-
-        try: return self.itemDict[id]['name']
-        except: pass
-
-        return str(self.itemDict[id])
+        return self.itemDict[id]['name']
 
 
 if __name__ == '__main__' :
     tree = HierarchicalModel()
-    tree.add(0, item="root")
-    tree.add(1, 0, item="3D models")
-    tree.add(2, 1, item="Weapons")
-    tree.add(3, 2, item="Guns")
-    tree.add(4, 2, item="Melees")
-    tree.add(5, 2, item="Bombs")
-    tree.add(6, 1, item="Vehicles")
-    tree.add(7, 6, item="Boats")
-    tree.add(8, 6, item="Bikes")
-    tree.add(9, 1, item="Trees")
-    tree.add(10, 0, item="Sprite Sheets")
-    tree.add(11, 10, item="Characters")
-    tree.add(12, 10, item="Effects")
+    tree.add(0, name="root")
+    tree.add(1, 0, name="3D models")
+    tree.add(2, 1, name="Weapons")
+    tree.add(3, 2, name="Guns")
+    tree.add(4, 2, name="Melees")
+    tree.add(5, 2, name="Bombs")
+    tree.add(6, 1, name="Vehicles")
+    tree.add(7, 6, name="Boats")
+    tree.add(8, 6, name="Bikes")
+    tree.add(9, 1, name="Trees")
+    tree.add(10, 0, name="Sprite Sheets")
+    tree.add(11, 10, name="Characters")
+    tree.add(12, 10, name="Effects")
 
     print(tree.connection)
     print(tree.getTree(0))
