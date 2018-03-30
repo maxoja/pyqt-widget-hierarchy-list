@@ -119,9 +119,11 @@ class ItemArea(QScrollArea):
 
     def construct(self, layout, id, level):
         for childId in self.model.getChildrenOf(id, getIdOnly=True):
-            dirItem = self.model.getDir(childId)
+            dirItem = self.model.getItemOf(childId)
             dirExpandable = self.model.hasChildren(childId)
-            listItem = Item(id, "folder-" + dirItem, level=level, expandable=dirExpandable)
+            dirName = self.model.getNameOf(childId)
+
+            listItem = Item(id, dirName, level=level, expandable=dirExpandable)
             listItem.clicked.connect(self.onClickItem)
             layout.addWidget(listItem)
             self.itemDict[childId] = listItem

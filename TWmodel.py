@@ -1,11 +1,11 @@
 class HierarchicalModel:
     def __init__(self):
         self.connection = dict()
-        self.dirDict = dict()
+        self.itemDict = dict()
         self.unmatched = []
 
     def add(self, id, parentId=None, item=None):
-        self.dirDict[id] = item
+        self.itemDict[id] = item
         self.connection[id] = []
 
         found = False
@@ -22,18 +22,18 @@ class HierarchicalModel:
 
         if self.unmatched:
             for i in self.unmatched[::]:
-                if id == self.dirDict[i].parentId:
+                if id == self.itemDict[i].parentId:
                     self.connection[id].append(i)
                     self.unmatched.remove(i)
 
     def getTree(self, rootId):
-        return self.dirDict[rootId], [ self.getTree(i) for i in self.connection[rootId] ]
+        return self.itemDict[rootId], [self.getTree(i) for i in self.connection[rootId]]
 
     def getChildrenOf(self, parentId, getIdOnly=False):
         if getIdOnly :
             return self.connection[parentId][::]
 
-        return [ self.dirDict[i] for i in self.connection[parentId] ]
+        return [self.itemDict[i] for i in self.connection[parentId]]
 
     def parentOf(self, childId):
         for parent, childList in self.connection.items() :
@@ -46,31 +46,31 @@ class HierarchicalModel:
         return self.parentOf(childId) is not None
 
     def removeById(self, id):
-        if id not in self.dirDict :
+        if id not in self.itemDict :
             return
 
-        self.dirDict.pop(id)
+        self.itemDict.pop(id)
         for parent, childList in self.connection.items() :
             if id in childList :
                 childList.remove(id)
 
     def getIds(self):
-        return self.dirDict.keys()
+        return self.itemDict.keys()
 
     def hasChildren(self, id):
         return self.connection[id]
 
-    def getDir(self, id):
-        return self.dirDict[id]
+    def getItemOf(self, id):
+        return self.itemDict[id]
 
     def getNameOf(self, id):
-        try: return self.dirDict[id].name
+        try: return self.itemDict[id].name
         except: pass
 
-        try: return self.dirDict[id]['name']
+        try: return self.itemDict[id]['name']
         except: pass
 
-        return str(self.dirDict[id])
+        return str(self.itemDict[id])
 
 
 if __name__ == '__main__' :
