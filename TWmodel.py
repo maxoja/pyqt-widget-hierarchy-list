@@ -22,7 +22,7 @@ class HierarchicalModel:
 
         if self.unmatched:
             for i in self.unmatched[::]:
-                if id == self.dirDict[i].parentId :
+                if id == self.dirDict[i].parentId:
                     self.connection[id].append(i)
                     self.unmatched.remove(i)
 
@@ -62,6 +62,15 @@ class HierarchicalModel:
 
     def getDir(self, id):
         return self.dirDict[id]
+
+    def getNameOf(self, id):
+        try: return self.dirDict[id].name
+        except: pass
+
+        try: return self.dirDict[id]['name']
+        except: pass
+
+        return str(self.dirDict[id])
 
 
 if __name__ == '__main__' :

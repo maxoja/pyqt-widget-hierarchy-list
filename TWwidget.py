@@ -7,6 +7,7 @@ from dropdown import DropDownArrow
 import sys
 import style
 
+
 class ItemIcon(QLabel):
     fixedSize = 18
 
@@ -86,6 +87,7 @@ class Item(QPushButton):
 
     def getId(self):
         return self.id
+
 
 class ItemArea(QScrollArea):
     fixedWidth = 250
@@ -191,7 +193,6 @@ if __name__ == '__main__':
 
     i = ItemArea(tree)
     i.show()
-
 
     # window = QWidget()
     # scrollarea = QScrollArea()
