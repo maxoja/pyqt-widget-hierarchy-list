@@ -164,13 +164,13 @@ class HierarchyPanel(QScrollArea):
 
         return None
 
-    def keyPressEvent(self, event):
-        if event.key() == Qt.Key_D:
-            item = self.getHighlightedItem()
-            if item is None:
-                return
-            self.model.removeById(item.getId())
-            self.reconstruct(0)
+    # def keyPressEvent(self, event):
+    #     if event.key() == Qt.Key_D:
+    #         item = self.getHighlightedItem()
+    #         if item is None:
+    #             return
+    #         self.model.removeById(item.getId())
+    #         self.reconstruct(0)
 
 
     def expandItem(self, id, expanding):
