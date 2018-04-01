@@ -54,7 +54,8 @@ class Item(QPushButton):
         self.icon = ItemIcon()
         self.label = ItemLabel(text)
         self.arrow = DropDownArrow(size=self.arrowSize, speed=self.arrowSpeed, updateEquation=self.arrowEq, kernel=self.arrowKernel)
-        if not expandable: self.arrow.setHideVisual(True)
+        if not expandable:
+            self.arrow.setHideVisual(True)
 
         layout = QHBoxLayout()
         layout.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
@@ -82,7 +83,7 @@ class Item(QPushButton):
     def setSelected(self, selected):
         self.selected = selected
         self.arrow.setSelected(selected)
-        color = QColor(220,220,220) if selected else QColor(0,0,0)
+        color = QColor(220,220,220) if self.highlighted else QColor(0,0,0)
         self.arrow.setColor(color)
 
     def isHighlighted(self):
@@ -124,12 +125,16 @@ class HierarchyPanel(QScrollArea):
         self.setWidget(self.contentSpace)
 
     def construct(self, layout, id, level):
+        if id not in self.expanding:
+            self.expandItem[id] = False
+
         for childId in self.model.getChildrenOf(id, getIdOnly=True):
+
             itemModel = self.model.getItemOf(childId)
             itemExpandable = self.model.hasChildren(childId)
             itemName = self.model.getNameOf(childId)
 
-            listItem = Item(id, itemName, level=level, expandable=itemExpandable)
+            listItem = Item(childId, itemName, level=level, expandable=itemExpandable)
             listItem.setToolTip(itemModel['tip'])
             listItem.clicked.connect(self.onClickItem)
             layout.addWidget(listItem)
@@ -140,7 +145,36 @@ class HierarchyPanel(QScrollArea):
 
             self.construct(layout, childId, level+1)
 
+    def reconstruct(self, rootId):
+        for k, i in self.itemDict.items():
+            i.setParent(None)
+            self.contentSpace.layout().removeWidget(i)
+
+        self.itemDict = dict()
+        self.construct(self.contentSpace.layout(), rootId, 0)
+
+        for i in self.itemDict:
+            if self.expanding[i]:
+                self.expandItem(i, True)
+
+    def getHighlightedItem(self):
+        for i in self.itemDict.values():
+            if i.isHighlighted():
+                return i
+
+        return None
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_D:
+            item = self.getHighlightedItem()
+            if item is None:
+                return
+            self.model.removeById(item.getId())
+            self.reconstruct(0)
+
+
     def expandItem(self, id, expanding):
+        self.expanding[id] = expanding
         listItem = self.itemDict[id]
         listItem.setSelected(expanding)
 
