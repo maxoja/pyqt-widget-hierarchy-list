@@ -6,6 +6,7 @@ class HierarchicalModel:
 
     def add(self, id, parentId=None, **item):
         assert( 'name' in item )
+        assert( id not in self.itemDict )
         self.itemDict[id] = item
         self.connection[id] = []
 
@@ -49,6 +50,9 @@ class HierarchicalModel:
     def hasParent(self, childId):
         return self.parentOf(childId) is not None
 
+    def hasChildren(self, parentId):
+        return self.connection[parentId]
+
     def removeById(self, id):
         if id not in self.itemDict:
             return
@@ -67,9 +71,6 @@ class HierarchicalModel:
 
     def getIds(self):
         return self.itemDict.keys()
-
-    def hasChildren(self, id):
-        return self.connection[id]
 
     def getItemOf(self, id):
         return self.itemDict[id]

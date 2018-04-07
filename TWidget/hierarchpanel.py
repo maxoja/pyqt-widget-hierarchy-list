@@ -117,16 +117,16 @@ class HierarchyPanel(QScrollArea):
         layout.setSizeConstraint(QLayout.SetMinAndMaxSize)
 
         rootId = 0
-        self.construct(layout, rootId, 0)
+        self.__construct(layout, rootId, 0)
 
         self.contentSpace = QWidget()
         self.contentSpace.setLayout(layout) ##layout added here
 
         self.setWidget(self.contentSpace)
 
-    def construct(self, layout, id, level):
+    def __construct(self, layout, id, level):
         if id not in self.expanding:
-            self.expandItem[id] = False
+            self.__expandItem[id] = False
 
         for childId in self.model.getChildrenOf(id, getIdOnly=True):
 
@@ -136,14 +136,14 @@ class HierarchyPanel(QScrollArea):
 
             listItem = Item(childId, itemName, level=level, expandable=itemExpandable)
             listItem.setToolTip(itemModel['tip'])
-            listItem.clicked.connect(self.onClickItem)
+            listItem.clicked.connect(self.__onClickItem)
             layout.addWidget(listItem)
             self.itemDict[childId] = listItem
 
             if level != 0:
                 listItem.hide()
 
-            self.construct(layout, childId, level+1)
+            self.__construct(layout, childId, level + 1)
 
     def reconstruct(self, rootId):
         for k, i in self.itemDict.items():
@@ -151,11 +151,11 @@ class HierarchyPanel(QScrollArea):
             self.contentSpace.layout().removeWidget(i)
 
         self.itemDict = dict()
-        self.construct(self.contentSpace.layout(), rootId, 0)
+        self.__construct(self.contentSpace.layout(), rootId, 0)
 
         for i in self.itemDict:
             if self.expanding[i]:
-                self.expandItem(i, True)
+                self.__expandItem(i, True)
 
     def getHighlightedItem(self):
         for i in self.itemDict.values():
@@ -173,7 +173,7 @@ class HierarchyPanel(QScrollArea):
     #         self.reconstruct(0)
 
 
-    def expandItem(self, id, expanding):
+    def __expandItem(self, id, expanding):
         self.expanding[id] = expanding
         listItem = self.itemDict[id]
         listItem.setSelected(expanding)
@@ -184,10 +184,10 @@ class HierarchyPanel(QScrollArea):
             if expanding :
                 childItem.show()
             else :
-                self.expandItem(childId, expanding)
+                self.__expandItem(childId, expanding)
                 childItem.hide()
 
-    def onClickItem(self):
+    def __onClickItem(self):
         for childId, child in self.itemDict.items() :
             if child != self.sender():
                 child.setHighlighted(False)
@@ -195,10 +195,10 @@ class HierarchyPanel(QScrollArea):
                 if child.isHighlighted():
                     if child.isSelected():
                         child.setSelected(False)
-                        self.expandItem(childId, False)
+                        self.__expandItem(childId, False)
                     else:
                         child.setSelected(True)
-                        child.arrow.onDown = lambda i=childId: self.expandItem(i, True)
+                        child.arrow.onDown = lambda i=childId: self.__expandItem(i, True)
 
                 child.setHighlighted(True)
 
