@@ -6,5 +6,18 @@ and buy the ebook
 
 below here is a list of important topics which I will take a look and bring the example in soon
 - message box                       : http://zetcode.com/gui/pyqt5/firstprograms/
-- q main window ( menu & toolbars ) : http://zetcode.com/gui/pyqt5/menustoolbars/
--  
+- menu & toolbars                   : http://zetcode.com/gui/pyqt5/menustoolbars/
+
+full ref
+Method          | Arguments                     | Details
+--------------- | ----------------------------- | ---
+add             | `id`, `parentId`, `item**`    | Add a new node hierarchy with a unique `id`, a parent with `parentId` as wll as `item` dictionary holding its data. This method internally constructs this hierarchy tree. The dictionary must contains a value for key 'name'. Please note that you can do in both approaches top-down or bottom-up.
+getTree         | `rootId`, `getIdOnly`=False   | Return a tree-structured tuple of the hierarchy related to the `rootId` specify. Can choose to retrieve only ids or the whole items by tagging `getIdOnly`.
+getChildrenOf   | `perentId`, `getIdOnly`=False | Return a list of children of the parent with `parentId`. Can choose to retrieve only ids or the whole items by tagging `getIdOnly`.
+parentOf        | `childId`                     | Return id of the parent ascending to the child with `childId`. If there is no parent, None would be returned.
+hasParent       | `childId`                     | Return a boolean indicating the existence of the parent of the child with the `childId`.
+hasChildren     | `parentid`                    | Return a boolean indicating the existence of the child of the parent with the `parentId`.
+removeById      | `id`                          | Remove a node with the `id` as well as all of its sub-coordinates.
+getIds          | -                             | Return a list of all node ids in the current hierarchy tree model.
+getItemOf       | `id`                          | Return the item dictionary held by the node with `id`.
+getNameOf       | `id`                          | Return the name of node with the `id`
