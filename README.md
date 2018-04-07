@@ -1,4 +1,4 @@
-## [PyQt5] Hierarchy Panel Widget
+# [PyQt5] Hierarchy Panel Widget
 
 
 
@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
 
 
-### API References
+## API References
 Method of `HierarchicalModel` | Arguments       | Details
 --------------- | ----------------------------- | ---
 add             | `id`, `parentId`, `item**`    | Add a new node hierarchy with a unique `id`, a parent with `parentId` as wll as `item` dictionary holding its data. This method internally constructs this hierarchy tree. The dictionary must contains a value for key 'name'. Please note that you can do in both approaches top-down or bottom-up.
@@ -83,7 +83,7 @@ reconstruct         | `rootId`                  | Should be called when changed 
 
 
 
-### change log
+## change log
 - version 1.0
   - initial release
   - HierarchicalModel added
@@ -94,4 +94,4 @@ reconstruct         | `rootId`                  | Should be called when changed 
 
 <div>credits : Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 
-###### latest readme.md update : Sat 07 April 2018 11:10pm
+###### latest readme.md update : Sat 07 April 2018 11:22pm
