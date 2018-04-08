@@ -2,7 +2,7 @@
 
 
 
-[](./mdsource/example.gif)
+![](./mdsource/example.gif)
 
 
 
