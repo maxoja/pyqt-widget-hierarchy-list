@@ -28,6 +28,8 @@ class HierarchicalModel:
                     self.connection[id].append(i)
                     self.unmatched.remove(i)
 
+        return self
+
     def getTree(self, rootId, getIdOnly=False):
         if getIdOnly:
             return rootId, [self.getTree(i, getIdOnly) for i in self.connection[rootId]]
